@@ -70,15 +70,16 @@
 
 (define time-to-impact
   (lambda (vertical-velocity elevation)
-    (let ((d (delta gravity (* -2 vertical-velocity ))))
-      (/ () (* 2 gravity)))))
+    (let ((d (delta gravity (* -2 vertical-velocity) (* -2 elevation))))
+      (/ (+ (* 2 vertical-velocity) (sqrt d)) (* 2 gravity)))))
 
 ;; Note that if we want to know when the ball drops to a particular height r 
 ;; (for receiver), we have
 
 (define time-to-height
   (lambda (vertical-velocity elevation target-elevation)
-    YOUR-CODE-HERE))
+    (let ((d (delta gravity (* -2 vertical-velocity) (* -2 (- elevation target-elevation)))))
+      (/ (+ (* 2 vertical-velocity) (sqrt d)) (* 2 gravity)))))
 
 ;; Problem 4
 
@@ -89,9 +90,13 @@
   (lambda (deg)
     (/ (*  deg pi) 180.)))
 
+;; !! a place of inconvenience, vy binding cannot be used in the same level of let
 (define travel-distance-simple
   (lambda (elevation velocity angle)
-    YOUR-CODE-HERE))
+    (let ((vx (cos (degree2radian angle)))
+          (vy (sin (degree2radian angle))))
+      (let ((t_impact (time-to-impact vy elevation)))
+        (* vx t_impact)))))
 
 ;; let's try this out for some example values.  Note that we are going to 
 ;; do everything in metric units, but for quaint reasons it is easier to think
