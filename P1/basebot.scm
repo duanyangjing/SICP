@@ -34,7 +34,8 @@
 
 (define position
   (lambda (a v u t)
-    YOUR-CODE-HERE))
+    (+ (+ (* v t) u)
+       (* 0.5 (* a (square t))))))
 
 ;; you need to complete this procedure, then show some test cases
 
@@ -46,14 +47,22 @@
 
 
 ;; Problem 2
+;; sequence of same arith operator works (* a b c)
+(define delta
+  (lambda (a b c)
+    (- (square b) (* 4 a c))))
 
+;; represent a negative number? -1 (minus sign num) works, with a variable need to
+;; think about it as minus sign with one argument (- var)
 (define root1
   (lambda (a b c)
-    YOUR-CODE-HERE))
+    (let ((d (delta a b c)))
+      (if (>= d 0) (/ (+ (- b) (sqrt d)) (* 2 a)) (#f)))))
 
 (define root2
   (lambda (a b c)
-    YOUR-CODE-HERE))
+    (let ((d (delta a b c)))
+      (if (>= d 0) (/ (- (- b) (sqrt d)) (* 2 a)) (#f)))))
 
 ;; complete these procedures and show some test cases
 
@@ -61,7 +70,8 @@
 
 (define time-to-impact
   (lambda (vertical-velocity elevation)
-    YOUR-CODE-HERE))
+    (let ((d (delta gravity (* -2 vertical-velocity ))))
+      (/ () (* 2 gravity)))))
 
 ;; Note that if we want to know when the ball drops to a particular height r 
 ;; (for receiver), we have
