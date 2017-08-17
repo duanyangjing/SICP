@@ -68,6 +68,11 @@
 
 ;; note that you will need to write extract-entry
 
+(define (extract-entry play assoc-list)
+  (list-search-positive assoc-list
+    (lambda (elem)
+      (equal? (car elem) play))))
+
 (define make-play list)
 
 (define the-empty-history '())
@@ -106,10 +111,27 @@
       "c"
       (most-recent-play other-history)))
 
+(define (eye-for-two-eyes my-history other-history)
+  (cond ((empty-history? my-history) "c")
+        ((empty-history? (rest-of-plays other-history)) "c")
+        (else
+         (let ((p1 (most-recent-play other-history))
+               (p2 (most-recent-play (rest-of-plays other-history))))
+           (if (and (string=? p1 "d") (string=? p2 "d"))
+               "d" "c")))))
+
+(define (make-eye-for-n-eyes n)
+    (cond ((< n 1) #f)
+          ((= n 1) EYE-FOR-EYE)
+          (else (lambda (my-history other-history)
+                  ((if (empty-history? other-history) "c"
+                       (if (string=? (most-recent-play other-history) "c") "c"
+                           (make-eye-for-n-eyes (- n 1)))))))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; code to use in 3 player game
-;;	    
+;;
 
 ;(define *game-association-list*
 ;  (list (list (list "c" "c" "c") (list 4 4 4))
